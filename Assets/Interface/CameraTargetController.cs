@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraTargetController : MonoBehaviour {
 
+    //
     public void moveX(float x)
     {
         transform.position += (transform.right * x) * Values.camMoveStep;

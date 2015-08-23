@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum Modifier
+﻿public enum Modifier
 {
     NONE, SHIFT, CTRL, ALT
 }

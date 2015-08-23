@@ -20,7 +20,9 @@ public class CursorInterface : MonoBehaviour {
 
     private bool isRightClick = false;
 
-	// Use this for initialization
+	/// <summary>
+    /// 
+    /// </summary>
 	void Start ()
     {
         keyboardInterface = this.gameObject.GetComponent<KeyboardInterface>();
@@ -29,6 +31,10 @@ public class CursorInterface : MonoBehaviour {
         this.camTarget = null;
 	}
 	
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="i"></param>
     public void setSelectionState(SelectType i)
     {
         if(this.selectType != i)
@@ -38,6 +44,10 @@ public class CursorInterface : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="b"></param>
     private void cursorVisible(bool b)
     {
         if(b)
@@ -53,7 +63,9 @@ public class CursorInterface : MonoBehaviour {
         }
     }
 
-	// Update is called once per frame
+	/// <summary>
+    /// 
+    /// </summary>
 	void Update ()
     {
 
@@ -95,6 +107,9 @@ public class CursorInterface : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     void FixedUpdate()
     {
         if(isRightClick)
@@ -219,6 +234,9 @@ public class CursorInterface : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void destroyMarker()
     {
         GameObject m = GameObject.Find("Marker");
@@ -245,6 +263,9 @@ public class CursorInterface : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void changeSquareMarkerY()
     {
         if(this.currentModule != null)

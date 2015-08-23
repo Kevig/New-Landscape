@@ -1,24 +1,31 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// Camera Control Script
+/// A Camera consists of a target Object, used as a rotation pivot point and
+/// a posTarget for movement around the landscape
+/// </summary>
 public class CameraController : MonoBehaviour
 {
-
     private GameObject target;
     private GameObject posTarget;
 
     private float x;
     private float y;
 
-
-    // Use this for initialization
+    /// <summary>
+    /// Unity initialisation method
+    /// </summary>
     void Start()
     {        
         this.initTarget();
         this.initCamera();
     }
     
-    // Initialise target
+    /// <summary>
+    /// Creates pivot and movement objects
+    /// Sets pivot as child of movement object
+    /// </summary>
     private void initTarget()
     {
         this.target = new GameObject();
@@ -37,7 +44,9 @@ public class CameraController : MonoBehaviour
         this.target.transform.parent = this.posTarget.transform;
     }
 
-    // Initialise camera relative to target
+    /// <summary>
+    /// Sets this objects position and as a child of the pivot object
+    /// </summary>
     private void initCamera()
     {
         this.transform.position = new Vector3(target.transform.position.x,
@@ -48,13 +57,20 @@ public class CameraController : MonoBehaviour
         this.transform.parent = this.target.transform;
     }
 
+    /// <summary>
+    /// Getter for position object's attached CameraTargetController script
+    /// </summary>
+    /// <returns></returns>
     public CameraTargetController getCamTarget()
     {
         return this.posTarget.GetComponent<CameraTargetController>();
     }
 
-    // Pre-condtion: requires value -1 or 1
-    // Reduce / Increase distance between camera and target
+    /// <summary>
+    /// Zoom function
+    /// Changes this objects distance between this and its pivot object
+    /// </summary>
+    /// <param name="n">+1 for zoom in, -1 for zoom out</param>
     public void modifyZoom(int n)
     {
         float dist = this.getDistance();
@@ -67,7 +83,9 @@ public class CameraController : MonoBehaviour
                                                       (n * Values.camZoomStep));
     }
 
-    // Modify camera's rotation
+    /// <summary>
+    /// Modiy Camera's rotation relative to pivot object
+    /// </summary>
     public void modifyRotation()
     {
         this.x += Input.GetAxis("Mouse X") * Values.camSensitivity;
@@ -77,7 +95,12 @@ public class CameraController : MonoBehaviour
         this.target.transform.rotation = Quaternion.Euler(this.y, this.x, 0.0f);
     }
 
-    // Raycast -y axis from target to landscape collider to keep target objects height above the landscape
+    /// <summary>
+    /// Height check function - TODO: Move to Movement object controller
+    /// Raycast -y axis from target to landscape collider to keep target objects 
+    /// height above the landscape
+    /// </summary>
+    /// <returns>A float value of the raycast hit position's y axis coordinate</returns>
     private float getHeight()
     {
         RaycastHit hit;
@@ -90,7 +113,10 @@ public class CameraController : MonoBehaviour
         return hitPoint.y;
     }
 
-    // Returns the distance between the Vector3 world coordinates of this object and the target object
+    /// <summary>
+    /// Distance check - TODO: Make generic / utlity
+    /// </summary>
+    /// <returns>A float value of the distance between this position and targets position</returns>
     private float getDistance()
     {
         return Vector3.Distance(this.transform.position, this.target.transform.position);

@@ -6,7 +6,7 @@ public static class Grid
 {
     public static bool load = false;
 
-    private static int gridSize = 3;
+    private static int gridSize = 6;
     private static int moduleSize = 3;
     private static float squareSize = 1f;
 
@@ -88,7 +88,7 @@ public static class Grid
         Dictionary<string, List<int>> d = new Dictionary<string, List<int>>();
 
         d.Add("Bottom", new List<int>());
-        for(int m = 0; m < s+2; m++)
+        for(int m = 0; m < s+1; m++)
         {
             d["Bottom"].Add(m);
         }
@@ -111,13 +111,13 @@ public static class Grid
             d["Top"].Add(m);
         }
 
-        //foreach(var pair in d)
-        //{
-        //    foreach(int i in pair.Value)
-        //    {
-        //        Debug.Log("Side: " + pair.Key + " value: " + i);
-        //    }
-        //}
+        foreach(var pair in d)
+        {
+            foreach(int i in pair.Value)
+            {
+                Debug.Log("Side: " + pair.Key + " value: " + i);
+            }
+        }
 
         return d;
     }

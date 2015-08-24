@@ -5,6 +5,7 @@ public static class Values
 {
     // Mesh Values
     public static float yStep = 0.2f;
+    public static float absoluteFloor = -(yStep * 100);
 
     // Camera Values
     public static float camSensitivity = 2f;

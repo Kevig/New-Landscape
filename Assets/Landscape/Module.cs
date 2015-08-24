@@ -45,6 +45,55 @@ public class Module : MonoBehaviour
 
         this.mesh.RecalculateNormals();
         this.mesh.Optimize();
+
+
+        // 'PROBALLY'!!!... far more complicated than needs to be, will rethink
+        EdgeWrapper moduleData = Grid.isEdgeModule(this.getIndex());
+        if(moduleData.abool)
+        {
+            int g1 = Grid.getGridSize();
+            int g2 = g1 * g1;
+
+            int n = this.mesh.vertices.Length;
+            Vector3[] v = new Vector3[n];
+
+            for(int i = 0; i < n; i++)
+            {
+                if(Grid.isEdgeVert(i, moduleData.aString))
+                {
+                    v[i] = new Vector3(this.mesh.vertices[i].x,
+                                       this.mesh.vertices[i].y + Values.absoluteFloor,
+                                       this.mesh.vertices[i].z);
+                }
+                else
+                {
+                    v[i] = this.mesh.vertices[i];
+                }
+
+                // Check if corner and run egde check for relative side
+                if(this.name == "Module1" || this.name == "Module" + (g2 - (g1 - 1)))
+                {
+                    if(Grid.isEdgeVert(i, "Left"))
+                    {
+                        v[i] = new Vector3(this.mesh.vertices[i].x,
+                                           this.mesh.vertices[i].y + Values.absoluteFloor,
+                                           this.mesh.vertices[i].z);
+                    }
+                }
+
+                if(this.name == "Module" + Grid.getGridSize() || this.name == "Module" + g2)
+                {
+                    if(Grid.isEdgeVert(i, "Right"))
+                    {
+                        v[i] = new Vector3(this.mesh.vertices[i].x,
+                                           this.mesh.vertices[i].y + Values.absoluteFloor,
+                                           this.mesh.vertices[i].z);
+                    }
+                }
+            }
+
+            this.updateMesh(v);
+        }
     }
 	
 	// Update is called once per frame

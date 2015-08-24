@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System;
 using System.Threading;
+using System.Collections.Generic;
 
 public class Module : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public class Module : MonoBehaviour
 	void Start ()
     {
         // Experimental
-        //Thread renderGL = new Thread(new ThreadStart(this.renderLines));
-        //renderGL.Start();
+        Thread renderGL = new Thread(new ThreadStart(this.renderLines));
+        renderGL.Start();
 
         GLRenderGrid.OnRenderLines += this.renderLines;
 

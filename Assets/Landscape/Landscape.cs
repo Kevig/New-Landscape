@@ -21,7 +21,7 @@ public class Landscape : MonoBehaviour {
             this.modules[i] = new GameObject();
             this.modules[i].name = "Module" + (i+1);
             this.modules[i].AddComponent<Module>();
-        }    
+        }
 	}
 	
     public GameObject[] getModules()

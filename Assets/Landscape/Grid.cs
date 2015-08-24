@@ -6,11 +6,14 @@ public static class Grid
 {
     public static bool load = false;
 
-    private static int gridSize = 30;
+    private static int gridSize = 3;
     private static int moduleSize = 3;
     private static float squareSize = 1f;
 
     private static Mesh mesh;
+
+    public static Dictionary<int, string> gridEdges;
+    public static Dictionary<string, List<int>> moduleEdges;
 
     static Grid()
     {
@@ -28,6 +31,8 @@ public static class Grid
         mesh.vertices = verts;
         mesh.uv = mapUvs(verts);
         mesh.triangles = mapTris();
+        gridEdges = calcGridEdges(gridSize);
+        moduleEdges = calcModuleEdges(moduleSize);
     }
 
     // Mesh accessor
@@ -52,6 +57,95 @@ public static class Grid
         return squareSize;
     }
 
+    private static Dictionary<int, string> calcGridEdges(int s)
+    {
+        Dictionary<int, string> d = new Dictionary<int, string>();
+        for(int m = 1; m < (s + 1); m++)
+        {
+            d.Add(m, "Bottom");
+            //Debug.Log(m);
+        }
+        for(int m = s +1; m < (s*s) - s; m+= s)
+        {
+            d.Add(m, "Left");
+            //Debug.Log(m);
+        }
+        for(int m = (s * 2); m < (s*s); m+= s)
+        {
+            d.Add(m, "Right");
+            //Debug.Log(m);
+        }
+        for(int m = (s * s) - (s-1); m < (s * s)+1; m++)
+        {
+            d.Add(m, "Top");
+            //Debug.Log(m);
+        }
+        return d;
+    }
+
+    private static Dictionary<string, List<int>> calcModuleEdges(int s)
+    {
+        Dictionary<string, List<int>> d = new Dictionary<string, List<int>>();
+
+        d.Add("Bottom", new List<int>());
+        for(int m = 0; m < s+2; m++)
+        {
+            d["Bottom"].Add(m);
+        }
+
+        d.Add("Left", new List<int>());
+        for(int m = 0; m < (s * s)+(s+1); m += s+1)
+        {
+            d["Left"].Add(m);
+        }
+
+        d.Add("Right", new List<int>());
+        for(int m = s; m < (s * s)+(s*2)+1; m += (s+1))
+        {
+            d["Right"].Add(m);
+        }
+
+        d.Add("Top", new List<int>());
+        for(int m = (s * s) + s; m < ((s+1) * (s+1)); m++)
+        {
+            d["Top"].Add(m);
+        }
+
+        //foreach(var pair in d)
+        //{
+        //    foreach(int i in pair.Value)
+        //    {
+        //        Debug.Log("Side: " + pair.Key + " value: " + i);
+        //    }
+        //}
+
+        return d;
+    }
+
+    public static EdgeWrapper isEdgeModule(int m)
+    {
+        bool a = false;
+        string b = "";
+        if(gridEdges.ContainsKey(m))
+        {
+            a = true;
+            b = gridEdges[m];
+        }
+        return new EdgeWrapper(a, b);
+    }
+
+    public static bool isEdgeVert(int s, string side)
+    {
+        if(moduleEdges.ContainsKey(side))
+        {
+            if(moduleEdges[side].Contains(s))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Get module origin coordinates
     public static Vector3 getModuleOrigin(int s)
     {
@@ -66,7 +160,7 @@ public static class Grid
         int x = (s-1) - (z * gridSize);
 
         float pos = -((gridSize / 2) * (moduleSize * squareSize)) + offset;
-        Vector3 result = new Vector3(pos + (step * x), 0f, pos + (step * z));
+        Vector3 result = new Vector3(pos + (step * x), 0.0f, pos + (step * z));
         return result;
     }
 
@@ -82,7 +176,7 @@ public static class Grid
         {
             for(int x = 0; x < size; x++)
             {
-                gridVerts[i] = new Vector3(pos + (squareSize * x), 0f, pos + (squareSize * z));
+                gridVerts[i] = new Vector3(pos + (squareSize * x), 0.0f, pos + (squareSize * z));
                 i++;
             }
         }

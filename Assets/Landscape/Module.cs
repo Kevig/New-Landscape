@@ -12,13 +12,14 @@ public class Module : MonoBehaviour
     private MeshCollider meshCollider;
     private MeshRenderer meshRenderer;
 
-    private Material lines;
+   // private Material lines;
 
     private bool isVisable = false;
 
 	// Use this for initialization
 	void Start ()
     {
+        
         // Experimental
         Thread renderGL = new Thread(new ThreadStart(this.renderLines));
         renderGL.Start();
@@ -45,15 +46,30 @@ public class Module : MonoBehaviour
 
         this.mesh.RecalculateNormals();
         this.mesh.Optimize();
+        this.setOceanShelf();
+        this.fixLandmassEdges();
+    }
+	
+    private void setOceanShelf()
+    {
+        if(Grid.isOceanShelf(this.getIndex()))
+        {
+            Vector3[] nv = new Vector3[this.mesh.vertices.Length];
+            int i = 0;
+            foreach(Vector3 ov in this.mesh.vertices)
+            {
+                nv[i] = new Vector3(ov.x, ov.y + Values.absoluteFloor, ov.z);
+                i++;
+            }
+            this.updateMesh(nv);
+        }
+    }
 
-
-        // 'PROBALLY'!!!... far more complicated than needs to be, will rethink
+    private void fixLandmassEdges()
+    {
         EdgeWrapper moduleData = Grid.isEdgeModule(this.getIndex());
         if(moduleData.abool)
         {
-            int g1 = Grid.getGridSize();
-            int g2 = g1 * g1;
-
             int n = this.mesh.vertices.Length;
             Vector3[] v = new Vector3[n];
 
@@ -71,7 +87,7 @@ public class Module : MonoBehaviour
                 }
 
                 // Check if corner and run egde check for relative side
-                if(this.name == "Module1" || this.name == "Module" + (g2 - (g1 - 1)))
+                if(this.name == "Module" + Grid.raisedCorners[0] || this.name == "Module" + Grid.raisedCorners[2])
                 {
                     if(Grid.isEdgeVert(i, "Left"))
                     {
@@ -81,7 +97,7 @@ public class Module : MonoBehaviour
                     }
                 }
 
-                if(this.name == "Module" + Grid.getGridSize() || this.name == "Module" + g2)
+                if(this.name == "Module" + Grid.raisedCorners[1] || this.name == "Module" + Grid.raisedCorners[3])
                 {
                     if(Grid.isEdgeVert(i, "Right"))
                     {
@@ -91,11 +107,10 @@ public class Module : MonoBehaviour
                     }
                 }
             }
-
             this.updateMesh(v);
         }
     }
-	
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -170,7 +185,6 @@ public class Module : MonoBehaviour
             dists[i] = Vector3.Distance(a, this.transform.TransformPoint(b));
             i++;
         }
-
         return dists;
     }
 
@@ -248,14 +262,6 @@ public class Module : MonoBehaviour
         {
             this.meshRenderer.receiveShadows = false;
         }
-    }
-
-    // Update collider to this mesh.
-    // Null the reference and reassign as this Mesh
-    private void updateCollider()
-    {
-        this.meshCollider.sharedMesh = null;
-        this.meshCollider.sharedMesh = this.mesh;
     }
 
     public Vector3 getVertByIndex(int i)

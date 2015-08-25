@@ -13,6 +13,6 @@ public static class Values
     public static float camZoomStep = 1f;
     public static float camTargetHeight = 1f;
     public static float minCamDist = 1f;
-    public static float maxCamDist = 20f;
+    public static float maxCamDist = 100f;
     
 }

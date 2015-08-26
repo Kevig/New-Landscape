@@ -5,10 +5,17 @@ using System.Linq;
 
 public class Marker : MonoBehaviour {
 
+    private SelectionInfoGUI selectionInfoGUI;
+
     private Mesh mesh;
     private MeshFilter filter;
     private Renderer meshRenderer;
     private MeshCollider meshCollider;
+
+    public void Awake()
+    {
+        this.selectionInfoGUI = GameObject.Find("SelectionInfo").GetComponent<SelectionInfoGUI>();
+    }
 
     public void initObj(int type, Vector3[] points)
     {
@@ -17,8 +24,8 @@ public class Marker : MonoBehaviour {
         {
             case 1:
                 this.meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
-                this.transform.localScale = new Vector3(.4f, .4f, .4f);
-                this.transform.position = points[0];
+                this.transform.localScale = new Vector3(.6f, .6f, .6f);
+                this.setPosition(points[0]);
                 break;
 
             case 2:
@@ -77,7 +84,7 @@ public class Marker : MonoBehaviour {
         v = this.sortVectors(v);
         for(int i = 0; i < 4; i++)
         {
-            v[i] = new Vector3(v[i].x, v[i].y + 0.0009f, v[i].z);
+            v[i] = new Vector3(v[i].x, v[i].y + 0.001f, v[i].z);
         }
         Vector2[] uvs = new Vector2[4];
         for(int i = 0; i < 4; i++)
@@ -88,7 +95,10 @@ public class Marker : MonoBehaviour {
         this.mesh.triangles = new int[6] { 1, 2, 3, 0, 2, 1 };
         this.mesh.uv = uvs;
         this.filter.mesh = this.mesh;
+        this.meshCollider.sharedMesh = null;
         this.meshCollider.sharedMesh = this.mesh;
+
+        this.updateGUI(v);
     }
 
     public Vector3[] getMeshVerts()
@@ -113,19 +123,32 @@ public class Marker : MonoBehaviour {
             c[i] = new Vector3(v.x, v.y + n, v.z);
             i++;
         }
-        this.mesh.vertices = c;
+
         this.meshCollider.sharedMesh = null;
         this.meshCollider.sharedMesh = this.mesh;
+        this.mesh.vertices = c;
+        this.updateGUI(c);
     }
 
     public void setPosition(Vector3 pos)
     {
         this.transform.position = pos;
+        this.updateGUI(pos);
     }
 
     public Vector3 getPosition()
     {
         return this.transform.position;
+    }
+
+    private void updateGUI(Vector3[] v)
+    {
+        this.selectionInfoGUI.UpdateGUI(v);
+    }
+
+    private void updateGUI(Vector3 v)
+    {
+        this.selectionInfoGUI.UpdateGUI(v);
     }
 
     // Update is called once per frame

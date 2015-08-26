@@ -53,6 +53,8 @@
      <Compile Include="Assets\Interface\InputEventInterface.cs" />
      <Compile Include="Assets\Interface\KeyboardInterface.cs" />
      <Compile Include="Assets\Interface\Marker.cs" />
+     <Compile Include="Assets\Interface\SelectionInfoGUI.cs" />
+     <Compile Include="Assets\Interface\VertDisplayGUI.cs" />
      <Compile Include="Assets\Landscape\Grid.cs" />
      <Compile Include="Assets\Landscape\Landscape.cs" />
      <Compile Include="Assets\Landscape\Module.cs" />

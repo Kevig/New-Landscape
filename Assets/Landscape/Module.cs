@@ -145,7 +145,7 @@ public class Module : MonoBehaviour
     }
 
     // Compare Two Vertices by x and z values
-    private bool compare(Vector3 a, Vector3 b)
+    private bool compareXZ(Vector3 a, Vector3 b)
     {
         bool result = false;
         if(a.x == b.x && a.z == b.z)
@@ -164,7 +164,7 @@ public class Module : MonoBehaviour
         foreach(Vector3 v in this.mesh.vertices)
         {
             Vector3 a = this.transform.TransformPoint(v);
-            if(compare(a,b))
+            if(compareXZ(a,b))
             {
                 result = i;
                 break;
@@ -202,6 +202,8 @@ public class Module : MonoBehaviour
 
     // Returns a Vector3 array representing the closest 4 Vector3 points of this
     // Objects mesh to the provided Vector3
+    // Requires fix for 'on the line' clicks, if a figure % 1 == 0 then find 1 point only
+    // then return other 3 points as +squaresize on the x and z axis to form the square
     public Vector3[] getSquarePoints(Vector3 a)
     {
         Vector3[] result = new Vector3[4];
@@ -213,7 +215,7 @@ public class Module : MonoBehaviour
             result[i] = this.mesh.vertices[index];
             result[i] = this.transform.TransformPoint(result[i]);
 
-            dists[index] = 100f;
+            dists[index] = 999999f;
         }
         return result;
     }
@@ -280,10 +282,9 @@ public class Module : MonoBehaviour
         this.mesh.vertices = verts;
         this.mesh.triangles = tris;
         this.mesh.uv = uvs;
-
+        this.mesh.RecalculateNormals();
         this.filter.mesh = this.mesh;
         this.meshCollider.sharedMesh = this.mesh;
-        this.mesh.RecalculateNormals();
         this.mesh.Optimize();
         
     }

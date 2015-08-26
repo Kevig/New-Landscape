@@ -271,8 +271,6 @@ public class CursorInterface : MonoBehaviour {
         if(this.currentModule != null)
         {
             float n = Input.GetAxis("Mouse Y") * Values.yStep;
-            
-            //this.marker.setPosition(new Vector3(point.x, point.y + n, point.z));
 
             foreach(Module m in this.getSearchModules())
             {

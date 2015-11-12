@@ -16,7 +16,7 @@ Platform assembly: D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\
 Loading D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.031 seconds
+- Completed reload, in  0.201 seconds
 desktop: 2560x1440 59Hz; virtual: 2560x1440 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -24,5 +24,5 @@ desktop: 2560x1440 59Hz; virtual: 2560x1440 at 0,0
 Platform assembly: D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Projects\New Landscape\Builds\Build4\build04_Data\Managed\System.dll (this message is harmless)
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 477c8 -> priority: 1 
-  Thread -> id: 48110 -> priority: 1 
+  Thread -> id: 3ad4 -> priority: 1 
+  Thread -> id: 3974 -> priority: 1 
